@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Name }}
+  labels:
+    app: {{ .TemplateName }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .TemplateName }}
+  replicas: {{ .ReplicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ .TemplateName }}
+    spec:
+      containers:
+      - name: nginx
+        image: {{ .ContainerImage }}
+        ports: {{ range .Ports }}
+        - containerPort: {{ . }} {{ end }}

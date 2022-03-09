@@ -1,25 +1,58 @@
 package main
 
 import (
-	"context"
-	"flag"
 	"fmt"
-	"path/filepath"
 
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/client-go/kubernetes"
-	"k8s.io/client-go/tools/clientcmd"
-	"k8s.io/client-go/util/homedir"
+	"github.com/aswcloud/server-k8s/k8s"
+	"github.com/aswcloud/server-k8s/k8s/template"
 )
 
-func main() {
-	kubeconfig := flag.String("kubeconfig", filepath.Join(homedir.HomeDir(), ".kube", "config"), "(optional) absolute path to the kubeconfig file")
+type Template struct {
+	Name           string
+	TemplateName   string
+	ReplicaCount   int
+	ContainerImage string
+	Ports          []int
+}
 
-	fmt.Println(*kubeconfig)
-	config, _ := clientcmd.BuildConfigFromFlags("", *kubeconfig)
-	// clientset을 생성한다
-	clientset, _ := kubernetes.NewForConfig(config)
-	// 파드를 나열하기 위해 API에 접근한다
-	pods, _ := clientset.CoreV1().Pods("default").List(context.TODO(), v1.ListOptions{})
-	fmt.Printf("There are %d pods in the cluster\n", len(pods.Items))
+func main() {
+	k8s := k8s.New()
+	list, err := k8s.Namespace().List()
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	for idx, item := range list.Items {
+		fmt.Println(idx, " : ", item.Name)
+	}
+	_, err = k8s.Namespace().Create("tttt")
+	if err != nil {
+		fmt.Println("List Error!")
+	}
+
+	k8s.Deployment("tttt").Create(template.DeploymentTemplate{
+		Name:           "nginx-deployment",
+		TemplateName:   "nginx-template",
+		ReplicaCount:   8,
+		ContainerImage: "nginx:latest",
+		Ports:          []int{80},
+	})
+	k8s.Service("tttt").Create(template.ServiceTemplate{
+		Name:         "nginx-service",
+		Type:         "NodePort",
+		TemplateName: "nginx-template",
+		Ports: []template.ServicePortTemplate{
+			{
+				Name:          "http",
+				TargetPort:    80,
+				ContainerPort: 80,
+				NodePort:      30001,
+			},
+		},
+	})
+
+	// k8s.Deployment("tttt").Remove("nginx-deployment")
+	// k8s.Service("tttt").Remove("nginx-service")
+	// k8s.Namespace().Remove("tttt")
+	// // 님은 방구 뿡뿡이~ 님은 방구 뿡뿡잉~~
 }
