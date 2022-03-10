@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Name }}
+  labels:
+    type: local
+spec:
+  persistentVolumeReclaimPolicy: Delete
+  capacity:
+    storage: {{ .Capacity }}
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: {{ .HostPath }}

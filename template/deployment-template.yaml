@@ -14,8 +14,18 @@ spec:
       labels:
         app: {{ .TemplateName }}
     spec:
-      containers:
-      - name: nginx
-        image: {{ .ContainerImage }}
+      volumes: {{ range .Volume }}
+      - name: {{ .Name }}
+        persistentVolumeClaim:
+          claimName: {{ .ClaimName }} {{ end }}
+      containers: {{ range .Containers }}
+      - name: {{ .Name }}
+        image: {{ .Image }}
         ports: {{ range .Ports }}
         - containerPort: {{ . }} {{ end }}
+        env: {{ range .Env }}
+        - name: {{ .Key }}
+          value: {{ .Value }} {{ end }}
+        volumeMounts: {{ range .VolumeMount }}
+        - name: {{ .Name }}
+          mountPath: {{ .MountPath }} {{ end }} {{ end }}
