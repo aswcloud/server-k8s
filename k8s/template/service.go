@@ -10,6 +10,7 @@ import (
 
 	corev1 "k8s.io/api/core/v1"
 	k8syaml "k8s.io/apimachinery/pkg/util/yaml"
+	// applyv1 "k8s.io/client-go/applyconfigurations/core/v1"
 )
 
 func ParseService(template ServiceTemplate) *corev1.Service {

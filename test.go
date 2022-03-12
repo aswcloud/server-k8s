@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/aswcloud/server-k8s/k8s"
 	"github.com/aswcloud/server-k8s/k8s/template"
 )
@@ -27,7 +29,7 @@ func CreateNamespace() {
 func CreateService() {
 	k8s := k8s.New()
 
-	k8s.Service("tttt").Create(template.ServiceTemplate{
+	value, _ := k8s.Service("tttt").Create(template.ServiceTemplate{
 		Name:         "nginx-service",
 		Type:         "NodePort",
 		TemplateName: "nginx-template",
@@ -36,7 +38,6 @@ func CreateService() {
 				Name:          "http",
 				TargetPort:    80,
 				ContainerPort: 80,
-				NodePort:      30001,
 			},
 			{
 				Name:          "sftp",
@@ -46,6 +47,10 @@ func CreateService() {
 			},
 		},
 	})
+	for idx, item := range value.Spec.Ports {
+		fmt.Println(idx, " : ", item.Name, " / ", item.NodePort)
+	}
+
 }
 
 func CreateDeployment() {

@@ -8,7 +8,6 @@ spec:
     app: {{ .TemplateName }}
   ports: {{ range .Ports }}
     - name: {{ .Name }}
-      targetPort: {{ .TargetPort }}
-      nodePort: {{ .NodePort }}
-      port: {{ .ContainerPort }} {{ end }}
-      
+      port: {{ .ContainerPort }} 
+      targetPort: {{ .TargetPort }} {{ if not (eq .NodePort 0) }}
+      nodePort: {{ .NodePort }} {{ end }} {{ end }}
