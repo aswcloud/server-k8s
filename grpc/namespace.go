@@ -3,6 +3,7 @@ package grpc
 import (
 	"context"
 	"fmt"
+	"log"
 
 	pb "github.com/aswcloud/idl/v1/kubernetes"
 	"github.com/aswcloud/server-k8s/k8s"
@@ -37,17 +38,19 @@ func (self *KubernetesServer) DeleteNamespace(ctx context.Context, name *pb.Name
 }
 
 func (self *KubernetesServer) ListNamespace(ctx context.Context, name *pb.Namespace) (*pb.ListNamespace, error) {
+	log.Println("receive")
+
 	k8s := k8s.New()
 	list, e := k8s.Namespace().List()
 	if e != nil {
-		fmt.Println(e)
+		log.Println(e)
 		return nil, e
 	}
 
 	data := funk.Map(list.Items, func(item v1.Namespace) string {
 		return item.ObjectMeta.Name
 	})
-	fmt.Println(data)
+	log.Println(data)
 	return &pb.ListNamespace{
 		Name: data.([]string),
 	}, nil
