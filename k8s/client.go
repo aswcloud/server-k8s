@@ -33,13 +33,15 @@ func New() *Client {
 	var config *rest.Config
 	if local {
 		config, perr = clientcmd.BuildConfigFromFlags("", kubeconfig)
+		log.Println("LOCAL MODE")
 		if perr != nil {
-			log.Println("LOCAL, ", perr)
+			log.Println(perr)
 		}
 	} else {
 		config, perr = rest.InClusterConfig()
+		log.Println("K8S MODE")
 		if perr != nil {
-			log.Println("K8S, ", perr)
+			log.Println()
 		}
 	}
 
