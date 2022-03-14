@@ -12,6 +12,10 @@ import (
 	"github.com/subosito/gotenv"
 
 	"google.golang.org/grpc"
+
+	og "github.com/aswcloud/server-k8s/grpc"
+
+	pb "github.com/aswcloud/idl/v1/kubernetes"
 )
 
 func main() {
@@ -28,6 +32,8 @@ func main() {
 			grpc_recovery.UnaryServerInterceptor(),
 		)),
 	)
+
+	pb.RegisterKubernetesServer(s, &og.KubernetesServer{})
 
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)

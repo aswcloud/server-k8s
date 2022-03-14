@@ -3,9 +3,11 @@ module github.com/aswcloud/server-k8s
 go 1.17
 
 require (
+	github.com/aswcloud/idl v0.10.0
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0
 	github.com/sirupsen/logrus v1.8.1
 	github.com/subosito/gotenv v1.2.0
+	github.com/thoas/go-funk v0.9.2
 	google.golang.org/grpc v1.45.0
 	k8s.io/api v0.23.4
 	k8s.io/apimachinery v0.23.4
