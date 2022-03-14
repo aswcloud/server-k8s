@@ -2,6 +2,9 @@ package k8s
 
 import (
 	"log"
+	"os"
+	"path/filepath"
+	"strconv"
 
 	// appsv1 "k8s.io/api/apps/v1"
 	// corev1 "k8s.io/api/core/v1"
@@ -9,6 +12,8 @@ import (
 
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
+	"k8s.io/client-go/tools/clientcmd"
+	"k8s.io/client-go/util/homedir"
 )
 
 type Client struct {
@@ -17,15 +22,29 @@ type Client struct {
 }
 
 func New() *Client {
-	// kubeconfig := filepath.Join(homedir.HomeDir(), ".kube", "config")
+	kubeconfig := filepath.Join(homedir.HomeDir(), ".kube", "config")
 	// kubeconfig := flag.String("kubeconfig", filepath.Join(homedir.HomeDir(), ".kube", "config"), "(optional) absolute path to the kubeconfig file")
-	config, err := rest.InClusterConfig()
-	// config, _ := clientcmd.BuildConfigFromFlags("kubernetes.default.svc", "")
-	// config, err := clientcmd.BuildConfigFromFlags("", kubeconfig)
+	local, perr := strconv.ParseBool(os.Getenv("LOCALHOST"))
 
-	if err != nil {
-		log.Println(err)
+	if perr != nil {
+		local = true
 	}
+
+	var config *rest.Config
+	if local {
+		config, perr = clientcmd.BuildConfigFromFlags("", kubeconfig)
+		if perr != nil {
+			log.Println("LOCAL, ", perr)
+		}
+	} else {
+		config, perr = rest.InClusterConfig()
+		if perr != nil {
+			log.Println("K8S, ", perr)
+		}
+	}
+
+	// config, _ := clientcmd.BuildConfigFromFlags("kubernetes.default.svc", "")
+
 	clientset, err2 := kubernetes.NewForConfig(config)
 	if err2 != nil {
 		log.Printf("unable to create a client: %v", err2)

@@ -20,6 +20,7 @@ import (
 
 func main() {
 	gotenv.Load()
+
 	log.Println("loaded")
 	lis, err := net.Listen("tcp", ":8000")
 	if err != nil {
