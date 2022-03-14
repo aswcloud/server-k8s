@@ -31,11 +31,12 @@ func New() *Client {
 		log.Printf("unable to create a client: %v", err2)
 	}
 
+	log.Println("success Load")
+
 	return &Client{
 		app:        clientset,
 		kubeconfig: "~!~!~!",
 	}
-	log.Println("success Load")
 }
 
 func (self *Client) Namespace() *Namespace {
