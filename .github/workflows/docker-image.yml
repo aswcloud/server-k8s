@@ -79,7 +79,7 @@ jobs:
           token: ${{ secrets.BOT_TOKEN }}
           valueFile: 'k8s/deployment-aswcloud.yaml'
           propertyPath: 'spec.template.spec.containers[0].image'
-          value: aoikazto/aswcloud-server:${{steps.tag.outputs.tag}}
+          value: aoikazto/k8s-server:${{steps.tag.outputs.tag}}
           commitChange: false
           updateFile: true
           workDir: .
