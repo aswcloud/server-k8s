@@ -44,10 +44,37 @@ func (self *KubernetesServer) CreateService(ctx context.Context, name *pb.Servic
 	}, nil
 }
 
-// func (self *KubernetesServer) DeleteService(ctx context.Context, name *pb.DeleteService) (*pb.Result, error) {
+func (self *KubernetesServer) DeleteService(ctx context.Context, name *pb.DeleteService) (*pb.Result, error) {
+	k8s := k8s.New()
 
-// }
+	err := k8s.Service(name.Namespace).Remove(name.Name)
 
-// func (self *KubernetesServer) ListService(ctx context.Context, name *pb.Namespace) (*pb.ListService, error) {
+	result := true
+	errText := ""
+	if err != nil {
+		result = false
+		errText = err.Error()
+	}
 
-// }
+	return &pb.Result{
+		Result: result,
+		Error:  &errText,
+	}, err
+}
+
+func (self *KubernetesServer) ListService(ctx context.Context, name *pb.Namespace) (*pb.ListService, error) {
+	k8s := k8s.New()
+
+	list, err := k8s.Service(name.Namespace).List()
+	if err != nil {
+		return &pb.ListService{}, err
+	}
+
+	result := funk.Map(list.Items, func(data v1.Service) string {
+		return data.Name
+	}).([]string)
+
+	return &pb.ListService{
+		Name: result,
+	}, nil
+}
