@@ -11,11 +11,9 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/subosito/gotenv"
 
-	"google.golang.org/grpc"
-
-	og "github.com/aswcloud/server-k8s/grpc"
-
 	pb "github.com/aswcloud/idl/v1/kubernetes"
+	og "github.com/aswcloud/server-k8s/grpc"
+	"google.golang.org/grpc"
 )
 
 func main() {

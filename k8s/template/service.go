@@ -28,15 +28,15 @@ func ParseService(template ServiceTemplate) *corev1.Service {
 }
 
 type ServicePortTemplate struct {
-	Name          string
-	TargetPort    int
-	NodePort      int
-	ContainerPort int
+	Name          string `json: "name"`
+	TargetPort    int32  `json: "targetPort"`
+	NodePort      int32  `json: "nodePort"`
+	ContainerPort int32  `json: "containerPort"`
 }
 
 type ServiceTemplate struct {
-	Name         string
-	Type         string
-	TemplateName string
-	Ports        []ServicePortTemplate
+	Name         string                `json: "name"`
+	Type         string                `json: "type"`
+	TemplateName string                `json: "templateName"`
+	Ports        []ServicePortTemplate `json: "ports"`
 }
