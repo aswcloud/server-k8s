@@ -1,6 +1,6 @@
 module github.com/aswcloud/server-k8s
 
-go 1.17
+go 1.18
 
 require (
 	github.com/aswcloud/idl v0.13.0
