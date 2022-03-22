@@ -27,6 +27,8 @@ func ParsePersistentVolumeClaim(template PersistentVolumeClaimTemplate) *corev1.
 }
 
 type PersistentVolumeClaimTemplate struct {
-	Name     string
-	Capacity string
+	Name             string   `json: "name"`
+	Capacity         string   `json: "capacity"`
+	AccessMode       []string `json: "accessMode"`
+	StorageClassName string   `json: "storageClassName"`
 }

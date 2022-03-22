@@ -37,7 +37,7 @@ func (self *KubernetesServer) DeleteNamespace(ctx context.Context, name *pb.Name
 	}, nil
 }
 
-func (self *KubernetesServer) ListNamespace(ctx context.Context, name *pb.Void) (*pb.ListNamespace, error) {
+func (self *KubernetesServer) ListNamespace(ctx context.Context, name *pb.Empty) (*pb.ListNamespace, error) {
 	log.Println("receive")
 
 	k8s := k8s.New()

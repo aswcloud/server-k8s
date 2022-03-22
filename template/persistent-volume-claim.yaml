@@ -4,8 +4,9 @@ metadata:
   name: {{ .Name }}
 spec:
   persistentVolumeReclaimPolicy: Delete
+  storageClassName: {{ .StorageClassName }}
   accessModes:
-    - ReadWriteOnce
+    - {{ .AccessMode }}
   resources:
     requests:
       storage: {{ .Capacity }}
