@@ -59,7 +59,7 @@ func (self *KubernetesServer) DeleteService(ctx context.Context, name *pb.Delete
 	return &pb.Result{
 		Result: result,
 		Error:  &errText,
-	}, err
+	}, nil
 }
 
 func (self *KubernetesServer) ListService(ctx context.Context, name *pb.Namespace) (*pb.ListService, error) {

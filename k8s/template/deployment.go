@@ -31,32 +31,32 @@ func ParseDeployment(template DeploymentTemplate) *appsv1.Deployment {
 }
 
 type DeploymentContainerTemplate struct {
-	Name        string
-	Image       string
-	Ports       []int
-	Env         []KeyValue
-	VolumeMount []DeploymentVolumeMountTemplate
+	Name        string                          `json: "name"`
+	Image       string                          `json: "image"`
+	Ports       []int                           `json: "ports"`
+	Env         []KeyValue                      `json: "env"`
+	VolumeMount []DeploymentVolumeMountTemplate `json: "volumeMount"`
 }
 
 type KeyValue struct {
-	Key   string
-	Value string
+	Key   string `json: "key"`
+	Value string `json: "value"`
 }
 
 type DeploymentVolumeTemplate struct {
-	Name      string
-	ClaimName string
+	Name      string `json: "name"`
+	ClaimName string `json: "claimName"`
 }
 
 type DeploymentVolumeMountTemplate struct {
-	Name      string
-	MountPath string
+	Name      string `json: "name"`
+	MountPath string `json: "mountPath"`
 }
 
 type DeploymentTemplate struct {
-	Name         string
-	TemplateName string
-	ReplicaCount int
-	Volume       []DeploymentVolumeTemplate
-	Containers   []DeploymentContainerTemplate
+	Name         string                        `json: "name"`
+	TemplateName string                        `json: "templateName"`
+	ReplicaCount int                           `json: "replicaCount"`
+	Volume       []DeploymentVolumeTemplate    `json: "volume"`
+	Containers   []DeploymentContainerTemplate `json: "containers"`
 }
