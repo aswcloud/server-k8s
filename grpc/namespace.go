@@ -16,7 +16,11 @@ func (self *KubernetesServer) CreateNamespace(ctx context.Context, name *pb.Name
 	_, e := k8s.Namespace().Create(name.Namespace)
 	if e != nil {
 		fmt.Println(e)
-		return nil, e
+		d := e.Error()
+		return &pb.Result{
+			Result: false,
+			Error:  &d,
+		}, nil
 	}
 	return &pb.Result{
 		Result: true,
@@ -28,8 +32,11 @@ func (self *KubernetesServer) DeleteNamespace(ctx context.Context, name *pb.Name
 	k8s := k8s.New()
 	e := k8s.Namespace().Remove(name.Namespace)
 	if e != nil {
-		fmt.Println(e)
-		return nil, e
+		text := e.Error()
+		return &pb.Result{
+			Result: false,
+			Error:  &text,
+		}, nil
 	}
 	return &pb.Result{
 		Result: true,
