@@ -5,8 +5,8 @@ metadata:
 spec:
   persistentVolumeReclaimPolicy: Delete
   storageClassName: {{ .StorageClassName }}
-  accessModes:
-    - {{ .AccessMode }}
+  accessModes: {{ range .AccessMode }}
+  - {{ . }} {{ end }}
   resources:
     requests:
       storage: {{ .Capacity }}
