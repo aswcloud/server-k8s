@@ -3,7 +3,7 @@ module github.com/aswcloud/server-k8s
 go 1.18
 
 require (
-	github.com/aswcloud/idl v0.18.0
+	github.com/aswcloud/idl v0.22.0
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0
 	github.com/sirupsen/logrus v1.8.1
 	github.com/subosito/gotenv v1.2.0
